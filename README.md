@@ -4,15 +4,15 @@ Using the Rick & Morty API [rickandmortyapi.com](https://www.rickandmortyapi.com
 
 ## The list of characters should include:
 
-● Image
-● Character information (name, species, etc).
+* Image
+* Character information (name, species, etc).
 
 ### Clicking on a card a detail view should be opened, containing:
 
-● Image
-● Character information (name, species, etc).
-● Origin and location information (name, dimension, amount of residents, etc).
-● Name of the chapters the character is featured on.
+* Image
+* Character information (name, species, etc).
+* Origin and location information (name, dimension, amount of residents, etc).
+* Name of the chapters the character is featured on.
 
 ### API provides REST and GraphQL versions
 
