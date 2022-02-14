@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,7 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   mainCardView: {
-    height: 90,
+    height: 120,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
@@ -21,8 +22,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 16,
     paddingRight: 14,
-    marginTop: 6,
-    marginBottom: 6,
+    marginTop: 16,
+    marginBottom: 16,
     marginLeft: 16,
     marginRight: 16,
   },
@@ -70,7 +71,7 @@ export default class App extends Component {
      return(
       <View style={{padding:10}}>
       <FlatList
-      padding ={30}
+      padding ={50}
          data={this.state.dataSource.results}
          renderItem={({item}) =>
          <TouchableWithoutFeedback
@@ -105,7 +106,7 @@ export default class App extends Component {
                 style={{
                   marginTop: 4,
                   borderWidth: 0,
-                  width: '85%',
+                  width: '100%',
                 }}>
                 <Text
                   style={{
@@ -113,26 +114,40 @@ export default class App extends Component {
                     fontSize: 12,
                   }}>
                   Species: {item.species}
+                </Text>
+              </View>
+              <View
+                style={{
+                  marginTop: 4,
+                  borderWidth: 0,
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    color: '#696969',
+                    fontSize: 12,
+                  }}>
                   Gender: {item.gender}
+                </Text>
+              </View>
+              <View
+                style={{
+                  marginTop: 4,
+                  borderWidth: 0,
+                  width: '100%',
+                }}>
+                <Text
+                  style={{
+                    color: '#696969',
+                    fontSize: 12,
+                  }}>
                   Origin: {item.origin.name}
                 </Text>
               </View>
             </View>
           </View>
-          <View
-            style={{
-              height: 25,
-              backgroundColor: '#FF35B8',
-              borderWidth: 0,
-              width: 25,
-              marginLeft: -26,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 50,
-            }}>
-            <Text style={{color: '#FFFFFF'}}>
-              {item.unread_messages_count}
-            </Text>
+          <View>
+            <Icon name="arrow" size={20} color="black" />
           </View>
         </View>
       </TouchableWithoutFeedback>
