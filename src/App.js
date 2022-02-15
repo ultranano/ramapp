@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Platform, Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,119 +41,137 @@ const styles = StyleSheet.create({
   },
 });
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
 export default class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      dataSource:[]
+      dataSource: [],
+      items: []
      };
    }
 
   componentDidMount(){
+
+    console.log('fetchData https://rickandmortyapi.com/api/character')
     fetch("https://rickandmortyapi.com/api/character")
     .then(response => response.json())
     .then((responseJson)=> {
       this.setState({
-       dataSource: responseJson
+       dataSource: responseJson,
+       items: responseJson.results
       })
+      //this.items = responseJson.results
+      //console.log(this.items)
     })
     .catch(error=>console.log(error)) //to catch the errors if any
     }
 
+    fetchMoreData = () => {
+      console.log('fetchMoreData ' + this.state.dataSource.info.next)
+      fetch(this.state.dataSource.info.next)
+      .then(response => response.json())
+      .then((responseJson)=> {
+        this.setState({
+         dataSource: responseJson,
+         items: this.state.items.concat(responseJson.results)
+        })
+      })
+      .catch(error=>console.log(error)) //to catch the errors if any
+    };
+
     render(){
      return(
       <View style={{padding:10}}>
-      <FlatList
-      padding ={50}
-         data={this.state.dataSource.results}
-         renderItem={({item}) =>
-         <TouchableWithoutFeedback
-        onPress={() => {
-          this.redirectToChatConverstion(item);
-        }}>
-        <View style={styles.mainCardView}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={styles.subCardView}>
-              <Image
-                source={item.image}
-                resizeMode="contain"
-                style={{
-                  borderRadius: 25,
-                  height: 50,
-                  width: 50,
-                }}
-              />
-            </View>
-            <View style={{marginLeft: 12}}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: '#000',
-                  fontWeight: 'bold',
-                  fontFamily: 'lucida grande',
-                  textTransform: 'capitalize',
-                }}>
-                {item.name}
-              </Text>
-              <View
-                style={{
-                  marginTop: 4,
-                  borderWidth: 0,
-                  width: '100%',
-                }}>
-                <Text
+
+      <InfiniteScroll
+        dataLength={this.state.items.length} //This is important field to render the next data
+        next={this.fetchMoreData}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        >
+        <FlatList
+        padding ={50}
+           data={this.state.items}
+           renderItem={({item}) =>
+           <TouchableWithoutFeedback
+          onPress={() => {
+            this.redirectToChatConverstion(item);
+          }}>
+          <View style={styles.mainCardView}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={styles.subCardView}>
+                <Image
+                  source={item.image}
+                  resizeMode="contain"
                   style={{
-                    color: '#696969',
-                    fontSize: 12,
-                  }}>
-                  Species: {item.species}
-                </Text>
+                    borderRadius: 25,
+                    height: 50,
+                    width: 50,
+                  }}
+                />
               </View>
-              <View
-                style={{
-                  marginTop: 4,
-                  borderWidth: 0,
-                  width: '100%',
-                }}>
+              <View style={{marginLeft: 12}}>
                 <Text
                   style={{
-                    color: '#696969',
-                    fontSize: 12,
+                    fontSize: 14,
+                    color: '#000',
+                    fontWeight: 'bold',
+                    fontFamily: 'lucida grande',
+                    textTransform: 'capitalize',
                   }}>
-                  Gender: {item.gender}
+                  {item.name}
                 </Text>
-              </View>
-              <View
-                style={{
-                  marginTop: 4,
-                  borderWidth: 0,
-                  width: '100%',
-                }}>
-                <Text
+                <View
                   style={{
-                    color: '#696969',
-                    fontSize: 12,
+                    marginTop: 4,
+                    borderWidth: 0,
+                    width: '100%',
                   }}>
-                  Origin: {item.origin.name}
-                </Text>
+                  <Text
+                    style={{
+                      color: '#696969',
+                      fontSize: 12,
+                    }}>
+                    Species: {item.species}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    marginTop: 4,
+                    borderWidth: 0,
+                    width: '100%',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#696969',
+                      fontSize: 12,
+                    }}>
+                    Gender: {item.gender}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    marginTop: 4,
+                    borderWidth: 0,
+                    width: '100%',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#696969',
+                      fontSize: 12,
+                    }}>
+                    Origin: {item.origin.name}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
-          <View>
-            <Icon name="arrow" size={20} color="black" />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-        }
-       />
+        </TouchableWithoutFeedback>
+          }
+         />
+    </InfiniteScroll>
+
      </View>
      )}
 }
