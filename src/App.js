@@ -29,11 +29,11 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   subCardView: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    backgroundColor: '#000',
-    borderColor: '#eeeeee',
+    height: 82,
+    width: 82,
+    borderRadius: 15,
+    backgroundColor: '#696969',
+    borderColor: '#696969',
     borderWidth: 1,
     borderStyle: 'solid',
     alignItems: 'center',
@@ -61,8 +61,6 @@ export default class App extends Component {
        dataSource: responseJson,
        items: responseJson.results
       })
-      //this.items = responseJson.results
-      //console.log(this.items)
     })
     .catch(error=>console.log(error)) //to catch the errors if any
     }
@@ -89,6 +87,11 @@ export default class App extends Component {
         next={this.fetchMoreData}
         hasMore={true}
         loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
         >
         <FlatList
         padding ={50}
@@ -105,9 +108,9 @@ export default class App extends Component {
                   source={item.image}
                   resizeMode="contain"
                   style={{
-                    borderRadius: 25,
-                    height: 50,
-                    width: 50,
+                    borderRadius: 14,
+                    height: 80,
+                    width: 80,
                   }}
                 />
               </View>
