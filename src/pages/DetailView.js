@@ -5,17 +5,17 @@
 
 //import dependencies
 import React, {Component} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, FlatList, StyleSheet, Text, View} from 'react-native';
 
+//styles
 const styles = StyleSheet.create({
-
   container:{
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   card_container:{
-    width: 252,
+    width: '100%',
   },
   card_template:{
     width: 252,
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
   subCardView: {
     height: 122,
     width: 122,
-    marginLeft: 12,
     borderRadius: 15,
     backgroundColor: '#696969',
     borderColor: '#696969',
@@ -49,24 +48,35 @@ const styles = StyleSheet.create({
   },
   subTitlesText: {
     color: '#696969',
-    fontSize: 12
+    fontSize: 14
   },
   subInfoTitlesView: {
     marginTop: 5,
     marginLeft: 12,
     color: '#696969',
+    fontSize: 14
+  },
+  subEpisodesView: {
+    borderWidth: 0,
+    width: '100%'
+  },
+  subEpisodesText: {
+    color: '#696969',
     fontSize: 12
   }
 });
 
+//DetailView
 class DetailView extends Component {
 
+  //constructor
   constructor(props) {
     super(props);
     this.state = {
       dataSourceLocation: [],
       dataSourceOrigin: [],
       dataSourceEpisodes: [],
+      dataIDEpisodes: [],
       amountOfResidentsForOrigin: 0,
       amountOfResidentsForLocation: 0,
       loadingOrigin: true,
@@ -74,10 +84,10 @@ class DetailView extends Component {
       loadingEpisodes: true,
       noMoreDataOrigin: true,
       noMoreDataLocation: true,
-      noMoreDataEpisodes: true,
      };
   }
 
+  //componentDidMount
   componentDidMount(){
 
     const { item } = this.props.route.params;
@@ -125,9 +135,37 @@ class DetailView extends Component {
       })
       .catch(error=>console.log(error)) //to catch the errors if any
     }
+
+    //Prepare Episodes IDs for Query
+    var strIDEpisodes = "";
+
+    //Collect Episodes IDs
+    for(let index = 0; index < item.episode.length; index++){
+      var strIDPos = item.episode[index].lastIndexOf('/')
+      strIDEpisodes = strIDEpisodes +","+ item.episode[index].substring(strIDPos+1, item.episode[index].length)
+	  }
+
+    //GET Detailed Data for Episodes
+    var getMultipleEpisodes = "https://rickandmortyapi.com/api/episode/"+strIDEpisodes
+    console.log("getMultipleEpisodes " +getMultipleEpisodes)
+    fetch(getMultipleEpisodes, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(response => response.json())
+    .then((responseJson)=> {
+      this.setState({
+       loadingEpisodes: false,
+       dataSourceEpisodes: responseJson
+      })
+    })
+    .catch(error=>console.log(error)) //to catch the errors if any
   }
 
-    render(){
+  //render DetailView
+  render(){
 
      const { item } = this.props.route.params;
 
@@ -140,7 +178,7 @@ class DetailView extends Component {
           <Image source={item.image} style={styles.card_image} />
           </View>
       </View>
-      <View style={{marginLeft: 12}}>
+      <View style={{marginLeft: 0}}>
         <Text style={{ marginTop:10, fontSize: 24, color: '#000', fontWeight: 'bold', fontFamily: 'lucida grande', textTransform: 'capitalize'}}>
           {item.name}
         </Text>
@@ -167,7 +205,7 @@ class DetailView extends Component {
         <View style={{padding:10}}/>
         <View style={styles.subTitlesView}>
           <Text style={styles.subTitlesText}>
-            Origin: {item.origin.name}
+            <b>Origin: {item.origin.name}</b>
           </Text>
         </View>
         {this.state.noMoreDataOrigin ?
@@ -203,7 +241,7 @@ class DetailView extends Component {
         <View style={{padding:10}}/>
         <View style={styles.subTitlesView}>
           <Text style={styles.subTitlesText}>
-            Location: {item.location.name}
+            <b>Location: {item.location.name}</b>
           </Text>
         </View>
         {this.state.noMoreDataLocation ?
@@ -236,6 +274,32 @@ class DetailView extends Component {
               </View>
               </View>
             }
+            <View style={{padding:10}}/>
+            <View style={styles.subTitlesView}>
+              <Text style={styles.subTitlesText}>
+                <b>Featured on {item.episode.length} episodes</b>
+              </Text>
+            </View>
+            <View style={{padding:10}}/>
+            { this.state.loadingEpisodes ?
+              <View style={styles.subInfoTitlesView}>
+                <Text style={styles.subTitlesText}>
+                  Getting detailed data from episodes...
+                </Text>
+              </View> :
+              <FlatList padding ={45}
+                 data={this.state.dataSourceEpisodes}
+                 renderItem={({item}) =>
+                 <View style={styles.subEpisodesView}>
+                   <Text style={styles.subEpisodesText}>
+                     Episode {item.episode}<br/>
+                     <b>"{item.name}"</b><br/>
+                     On Air date {item.air_date}<br/><br/>
+                   </Text>
+                 </View>
+                }
+               />
+            }
         </View>
         </View>
       </View>
@@ -243,6 +307,7 @@ class DetailView extends Component {
      )}
 }
 
+//DetailScreen
 const DetailScreen = ({ route, navigation }) => {
    return (
      <View>
