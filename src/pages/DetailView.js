@@ -5,7 +5,7 @@
 
 //import dependencies
 import React, {Component} from 'react';
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
 const styles = StyleSheet.create({
 
@@ -85,7 +85,7 @@ class DetailView extends Component {
     //GET Detailed Origin data
     console.log("Origin Url " +item.origin.url)
     //check simple url validation
-    if (item.origin.url != "") {
+    if (item.origin.url !== "") {
       fetch(item.origin.url, {
         method: 'GET',
         headers: {
@@ -107,7 +107,7 @@ class DetailView extends Component {
     //GET Detailed Location data
     console.log("Location Url " +item.location.url)
 
-    if (item.location.url != "") {
+    if (item.location.url !== "") {
       fetch(item.location.url, {
         method: 'GET',
         headers: {
@@ -129,7 +129,6 @@ class DetailView extends Component {
 
     render(){
 
-     const { navigate } = this.props.navigation;
      const { item } = this.props.route.params;
 
      return(
