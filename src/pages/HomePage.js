@@ -1,15 +1,22 @@
+//Project: ramapp
+//Version: 1.0 Beta
+//Author: Andrea Baldon
+//Contact: baldon.andrea@gmail.com
+
+//import dependencies
 import React, {Component} from 'react';
 import {Button, Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BsArrowRightCircle } from "react-icons/bs";
 
+//styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
   mainCardView: {
-    height: 120,
+    height: 130,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
@@ -28,8 +35,8 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   subCardView: {
-    height: 82,
-    width: 82,
+    height: 102,
+    width: 102,
     borderRadius: 15,
     backgroundColor: '#696969',
     borderColor: '#696969',
@@ -38,8 +45,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titleText: {
+    fontSize: 14,
+    color: '#000',
+    fontWeight: 'bold',
+    fontFamily: 'lucida grande',
+    textTransform: 'capitalize',
+    marginLeft: 4
+  },
   subTitlesView: {
     marginTop: 4,
+    marginLeft: 4,
     borderWidth: 0,
     width: '100%'
   },
@@ -49,8 +65,10 @@ const styles = StyleSheet.create({
   },
 });
 
+//HomePage
 class HomePage extends Component {
 
+  //constructor
   constructor(props) {
     super(props);
     this.state = {
@@ -59,9 +77,15 @@ class HomePage extends Component {
      };
   }
 
+  //componentDidMount
   componentDidMount(){
     console.log('fetchData https://rickandmortyapi.com/api/character')
-    fetch("https://rickandmortyapi.com/api/character")
+    fetch("https://rickandmortyapi.com/api/character", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
     .then(response => response.json())
     .then((responseJson)=> {
       this.setState({
@@ -72,27 +96,34 @@ class HomePage extends Component {
     .catch(error=>console.log(error)) //to catch the errors if any
   }
 
-    fetchMoreData = () => {
-      console.log('fetchMoreData ' + this.state.dataSource.info.next)
-      fetch(this.state.dataSource.info.next)
-      .then(response => response.json())
-      .then((responseJson)=> {
-        this.setState({
-         dataSource: responseJson,
-         items: this.state.items.concat(responseJson.results)
-        })
+  //fetchMoreData
+  fetchMoreData = () => {
+    console.log('fetchMoreData ' + this.state.dataSource.info.next)
+    fetch(this.state.dataSource.info.next, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(response => response.json())
+    .then((responseJson)=> {
+      this.setState({
+        dataSource: responseJson,
+        items: this.state.items.concat(responseJson.results)
       })
-      .catch(error=>console.log(error)) //to catch the errors if any
-    };
+    })
+    .catch(error=>console.log(error)) //to catch the errors if any
+  };
 
-    render(){
+  //render
+  render(){
 
-     const { navigate } = this.props.navigation;
+    const { navigate } = this.props.navigation;
 
-     return(
+    return(
       <View style={{padding:10}}>
       <InfiniteScroll
-        dataLength={this.state.items.length} //This is important field to render the next data
+        dataLength={this.state.items.length}
         next={this.fetchMoreData}
         hasMore={true}
         loader={<h4>Loading...</h4>}
@@ -109,16 +140,26 @@ class HomePage extends Component {
             <View style={styles.mainCardView}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View style={styles.subCardView}>
-                  <Image source={item.image} resizeMode="contain" style={{ borderRadius: 14, height: 80, width: 80 }}
+                  <Image source={item.image} resizeMode="contain" style={{ borderRadius: 14, height: 100, width: 100 }}
                   />
                 </View>
-                <View style={{marginLeft: 12}}>
-                  <Text style={{ fontSize: 14, color: '#000', fontWeight: 'bold', fontFamily: 'lucida grande', textTransform: 'capitalize'}}>
+                <View style={{marginLeft: 10}}>
+                  <Text style={styles.titleText}>
                     {item.name}
                   </Text>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
+                      Status: {item.status}
+                    </Text>
+                  </View>
+                  <View style={styles.subTitlesView}>
+                    <Text style={styles.subTitlesText}>
                       Species: {item.species}
+                    </Text>
+                  </View>
+                  <View style={styles.subTitlesView}>
+                    <Text style={styles.subTitlesText}>
+                      Type: {item.type == "" ? 'Unknown' : item.type}
                     </Text>
                   </View>
                   <View style={styles.subTitlesView}>
@@ -134,7 +175,7 @@ class HomePage extends Component {
                 </View>
               </View>
               <View>
-                <BsArrowRightCircle />
+                <BsArrowRightCircle style={{ height: 30, width: 30}}/>
               </View>
             </View>
            </TouchableWithoutFeedback>
@@ -145,6 +186,7 @@ class HomePage extends Component {
      )}
 }
 
+//HomeScreen
 const HomeScreen = ({ navigation }) => {
    return (
       <HomePage navigation={navigation}/>
