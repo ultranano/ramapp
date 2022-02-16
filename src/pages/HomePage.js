@@ -145,7 +145,7 @@ class HomePage extends Component {
                 </View>
                 <View style={{marginLeft: 10}}>
                   <Text style={styles.titleText}>
-                    {item.name}
+                    {item.name.indexOf('(') == -1 ? item.name : item.name.substring(0, item.name.indexOf('('))}
                   </Text>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
@@ -159,7 +159,7 @@ class HomePage extends Component {
                   </View>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
-                      Type: {item.type == "" ? 'Unknown' : item.type}
+                      Type: {item.type == "" ? 'Unknown' : item.type.indexOf('(') == -1 ? item.type : item.type.substring(0, item.type.indexOf('('))}
                     </Text>
                   </View>
                   <View style={styles.subTitlesView}>
@@ -169,7 +169,7 @@ class HomePage extends Component {
                   </View>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
-                      Origin: {item.origin.name}
+                      Origin: {item.origin.name.indexOf('(') == -1 ? item.origin.name : item.origin.name.substring(0, item.origin.name.indexOf('('))}
                     </Text>
                   </View>
                 </View>
