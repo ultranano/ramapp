@@ -62,6 +62,16 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: '100%'
   },
+  subEpisodesViewOdd: {
+    borderWidth: 0,
+    width: '100%',
+    backgroundColor: '#FFFFFF'
+  },
+  subEpisodesViewEven: {
+    borderWidth: 0,
+    width: '100%',
+    backgroundColor: '#CCCCCC'
+  },
   subEpisodesText: {
     color: '#696969',
     fontSize: 12
