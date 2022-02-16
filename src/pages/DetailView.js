@@ -6,7 +6,8 @@
 //import dependencies
 import React, {Component} from 'react';
 import {Image, FlatList, StyleSheet, Text, View} from 'react-native';
-import { BsFillCircleFill } from "react-icons/bs";
+import { BsFillCircleFill, BsGeoAltFill, BsTv } from "react-icons/bs";
+import { IoIosPlanet } from "react-icons/io";
 
 //styles
 const styles = StyleSheet.create({
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   },
   subTitlesText: {
     color: '#696969',
-    fontSize: 14
+    fontSize: 14,
   },
   subInfoTitlesView: {
     marginTop: 5,
@@ -165,6 +166,18 @@ class DetailView extends Component {
     .catch(error=>console.log(error)) //to catch the errors if any
   }
 
+  FlatListItemSeparator = () => {
+    return (
+     <View
+       style={{
+         height: 1,
+         width: "100%",
+         backgroundColor: "#CCC",
+       }}
+     />
+    );
+  }
+
   //render DetailView
   render(){
 
@@ -205,8 +218,11 @@ class DetailView extends Component {
           </Text>
         </View>
         <View style={{padding:10}}/>
+        <this.FlatListItemSeparator />
+        <View style={{padding:6}}/>
         <View style={styles.subTitlesView}>
           <Text style={styles.subTitlesText}>
+            <IoIosPlanet style={{ height: 38, width: 38, color: '#696969'}}/>
             <b>Origin: {item.origin.name}</b>
           </Text>
         </View>
@@ -241,8 +257,11 @@ class DetailView extends Component {
             </View>
           }
         <View style={{padding:10}}/>
+        <this.FlatListItemSeparator />
+        <View style={{padding:6}}/>
         <View style={styles.subTitlesView}>
           <Text style={styles.subTitlesText}>
+            <BsGeoAltFill style={{ height: 28, width: 28, color: '#696969'}}/>
             <b>Location: {item.location.name}</b>
           </Text>
         </View>
@@ -277,12 +296,14 @@ class DetailView extends Component {
               </View>
             }
             <View style={{padding:10}}/>
+            <this.FlatListItemSeparator />
+            <this.FlatListItemSeparator />
+            <View style={{padding:6}}/>
             <View style={styles.subTitlesView}>
               <Text style={styles.subTitlesText}>
-                <b>Featured on {item.episode.length} episodes</b>
+                <BsTv style={{ height: 28, width: 28, marginRight:10, color: '#696969'}}/><b>Featured on {item.episode.length} episodes</b>
               </Text>
             </View>
-            <View style={{padding:10}}/>
             { this.state.loadingEpisodes ?
               <View style={styles.subInfoTitlesView}>
                 <Text style={styles.subTitlesText}>
@@ -291,9 +312,11 @@ class DetailView extends Component {
               </View> :
               <FlatList padding ={45}
                  data={this.state.dataSourceEpisodes}
+                 ItemSeparatorComponent = { this.FlatListItemSeparator }
                  renderItem={({item}) =>
                  <View style={styles.subEpisodesView}>
                    <Text style={styles.subEpisodesText}>
+                     <br/>
                      Episode {item.episode}<br/>
                      <b>"{item.name}"</b><br/>
                      On Air date {item.air_date}<br/><br/>

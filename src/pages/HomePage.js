@@ -135,6 +135,7 @@ class HomePage extends Component {
         >
         <FlatList padding ={45}
            data={this.state.items}
+           onScroll={this.handleScroll}
            renderItem={({item}) =>
            <TouchableWithoutFeedback onPress={() => navigate("DetailView", {item})}>
             <View style={styles.mainCardView}>
