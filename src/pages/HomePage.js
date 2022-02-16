@@ -149,9 +149,9 @@ class HomePage extends Component {
                   </Text>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
-                      {item.status == "Alive" ?
+                      {item.status === "Alive" ?
                         <BsFillCircleFill style={{ height: 8, width: 8, color: '#008000'}}/>
-                        : item.status == "unknown" ?
+                        : item.status === "unknown" ?
                           <BsFillCircleFill style={{ height: 8, width: 8, color: '#CCCCCC'}}/>
                           :
                           <BsFillCircleFill style={{ height: 8, width: 8, color: '#000000'}}/>
