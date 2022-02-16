@@ -1,29 +1,34 @@
+//Project: ramapp
+//Version: 1.0 Beta
+//Author: Andrea Baldon
+//Contact: baldon.andrea@gmail.com
+
+//import dependencies
 import React, {Component} from 'react';
-import {Button, Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
+import {Button, Image, StyleSheet, Text, View} from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
+
+  container:{
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  mainCardView: {
-    height: 120,
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 15,
-    shadowColor: '#696969',
-    shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 1,
-    shadowRadius: 8,
-    elevation: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 16,
-    paddingRight: 14,
-    marginTop: 12,
-    marginBottom: 12,
-    marginLeft: 16,
-    marginRight: 16,
+  card_container:{
+    width: 252,
+  },
+  card_template:{
+    width: 252,
+    height: 252,
+    borderColor: '#696969',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius : 15
+  },
+  card_image: {
+    width: 250,
+    height: 250,
+    borderRadius : 15
   },
   subCardView: {
     height: 122,
@@ -64,45 +69,62 @@ class DetailView extends Component {
       dataSourceEpisodes: [],
       amountOfResidentsForOrigin: 0,
       amountOfResidentsForLocation: 0,
+      loadingOrigin: true,
+      loadingLocation: true,
+      loadingEpisodes: true,
+      noMoreDataOrigin: true,
+      noMoreDataLocation: true,
+      noMoreDataEpisodes: true,
      };
   }
-
 
   componentDidMount(){
 
     const { item } = this.props.route.params;
 
-    console.log(item.origin.url)
-    fetch(item.origin.url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(response => response.json())
-    .then((responseJson)=> {
-      this.setState({
-       dataSourceOrigin: responseJson,
-       amountOfResidentsForOrigin: responseJson.residents.length
+    //GET Detailed Origin data
+    console.log("Origin Url " +item.origin.url)
+    //check simple url validation
+    if (item.origin.url != "") {
+      fetch(item.origin.url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
       })
-    })
-    .catch(error=>console.log(error)) //to catch the errors if any
+      .then(response => response.json())
+      .then((responseJson)=> {
+        this.setState({
+         loadingOrigin: false,
+         noMoreDataOrigin: false,
+         dataSourceOrigin: responseJson,
+         amountOfResidentsForOrigin: responseJson.residents.length
+        })
+      })
+      .catch(error=>console.log(error)) //to catch the errors if any
+    }
 
-    console.log(item.location.url)
-    fetch(item.location.url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then(response => response.json())
-    .then((responseJson)=> {
-      this.setState({
-       dataSourceLocation: responseJson,
-       amountOfResidentsForLocation: responseJson.residents.length
+    //GET Detailed Location data
+    console.log("Location Url " +item.location.url)
+
+    if (item.location.url != "") {
+      fetch(item.location.url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
       })
-    })
-    .catch(error=>console.log(error)) //to catch the errors if any
+      .then(response => response.json())
+      .then((responseJson)=> {
+        this.setState({
+         loadingLocation: false,
+         noMoreDataLocation: false,
+         dataSourceLocation: responseJson,
+         amountOfResidentsForLocation: responseJson.residents.length
+        })
+      })
+      .catch(error=>console.log(error)) //to catch the errors if any
+    }
   }
 
     render(){
@@ -111,9 +133,13 @@ class DetailView extends Component {
      const { item } = this.props.route.params;
 
      return(
-      <View style={{padding:10}}>
-      <View style={styles.subCardView}>
-        <Image source={item.image} resizeMode="contain" style={{ borderRadius: 14, height: 120, width: 120 }} />
+      <View style={{padding:10, flex:1}}>
+      <View style={styles.container}>
+      <View style={styles.card_container}>
+      <View style={styles.card_template}>
+        <View>
+          <Image source={item.image} style={styles.card_image} />
+          </View>
       </View>
       <View style={{marginLeft: 12}}>
         <Text style={{ marginTop:10, fontSize: 24, color: '#000', fontWeight: 'bold', fontFamily: 'lucida grande', textTransform: 'capitalize'}}>
@@ -139,45 +165,79 @@ class DetailView extends Component {
             Gender: {item.gender}
           </Text>
         </View>
+        <View style={{padding:10}}/>
         <View style={styles.subTitlesView}>
           <Text style={styles.subTitlesText}>
             Origin: {item.origin.name}
           </Text>
         </View>
-        <View style={styles.subInfoTitlesView}>
-          <Text style={styles.subTitlesText}>
-            Type: {this.state.dataSourceOrigin.type}
-          </Text>
-        </View>
-        <View style={styles.subInfoTitlesView}>
-          <Text style={styles.subTitlesText}>
-            Dimension: {this.state.dataSourceOrigin.dimension}
-          </Text>
-        </View>
-        <View style={styles.subInfoTitlesView}>
-          <Text style={styles.subTitlesText}>
-            Amount of Residents: {this.state.amountOfResidentsForOrigin}
-          </Text>
-        </View>
+        {this.state.noMoreDataOrigin ?
+          <View style={styles.subInfoTitlesView}>
+            <Text style={styles.subTitlesText}>
+              No more data for Origin
+            </Text>
+          </View> :
+          this.state.loadingOrigin ?
+            <View style={styles.subInfoTitlesView}>
+              <Text style={styles.subTitlesText}>
+                Getting detailed data from origin...
+              </Text>
+            </View> :
+            <View>
+            <View style={styles.subInfoTitlesView}>
+              <Text style={styles.subTitlesText}>
+                Type: {this.state.dataSourceOrigin.type}
+              </Text>
+            </View>
+            <View style={styles.subInfoTitlesView}>
+              <Text style={styles.subTitlesText}>
+                Dimension: {this.state.dataSourceOrigin.dimension}
+              </Text>
+            </View>
+            <View style={styles.subInfoTitlesView}>
+              <Text style={styles.subTitlesText}>
+                Amount of Residents: {this.state.amountOfResidentsForOrigin}
+              </Text>
+            </View>
+            </View>
+          }
+        <View style={{padding:10}}/>
         <View style={styles.subTitlesView}>
           <Text style={styles.subTitlesText}>
             Location: {item.location.name}
           </Text>
         </View>
-        <View style={styles.subInfoTitlesView}>
-          <Text style={styles.subTitlesText}>
-            Type: {this.state.dataSourceLocation.type}
-          </Text>
+        {this.state.noMoreDataLocation ?
+          <View style={styles.subInfoTitlesView}>
+            <Text style={styles.subTitlesText}>
+              No more data for Location
+            </Text>
+          </View> :
+          this.state.loadingLocation ?
+          <View style={styles.subInfoTitlesView}>
+            <Text style={styles.subTitlesText}>
+              Getting detailed data from location...
+            </Text>
+          </View> :
+              <View>
+              <View style={styles.subInfoTitlesView}>
+                <Text style={styles.subTitlesText}>
+                  Type: {this.state.dataSourceLocation.type}
+                </Text>
+              </View>
+              <View style={styles.subInfoTitlesView}>
+                <Text style={styles.subTitlesText}>
+                  Dimension: {this.state.dataSourceLocation.dimension}
+                </Text>
+              </View>
+              <View style={styles.subInfoTitlesView}>
+                <Text style={styles.subTitlesText}>
+                  Amount of Residents: {this.state.amountOfResidentsForLocation}
+                </Text>
+              </View>
+              </View>
+            }
         </View>
-        <View style={styles.subInfoTitlesView}>
-          <Text style={styles.subTitlesText}>
-            Dimension: {this.state.dataSourceLocation.dimension}
-          </Text>
-        </View>
-        <View style={styles.subInfoTitlesView}>
-          <Text style={styles.subTitlesText}>
-            Amount of Residents: {this.state.amountOfResidentsForLocation}
-          </Text>
         </View>
       </View>
       </View>
@@ -188,7 +248,7 @@ const DetailScreen = ({ route, navigation }) => {
    return (
      <View>
       <DetailView route={route} navigation={navigation}/>
-      </View>
+     </View>
    );
 };
 
