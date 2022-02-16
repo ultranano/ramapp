@@ -6,6 +6,7 @@
 //import dependencies
 import React, {Component} from 'react';
 import {Image, FlatList, StyleSheet, Text, View} from 'react-native';
+import { BsFillCircleFill } from "react-icons/bs";
 
 //styles
 const styles = StyleSheet.create({
@@ -184,12 +185,13 @@ class DetailView extends Component {
         </Text>
         <View style={styles.subTitlesView}>
           <Text style={styles.subTitlesText}>
-            Status: {item.status}
-          </Text>
-        </View>
-        <View style={styles.subTitlesView}>
-          <Text style={styles.subTitlesText}>
-            Species: {item.species}
+            {item.status == "Alive" ?
+              <BsFillCircleFill style={{ height: 8, width: 8, color: '#008000'}}/>
+              : item.status == "unknown" ?
+                <BsFillCircleFill style={{ height: 8, width: 8, color: '#CCCCCC'}}/>
+                :
+                <BsFillCircleFill style={{ height: 8, width: 8, color: '#000000'}}/>
+            } {item.status} - {item.species}
           </Text>
         </View>
         <View style={styles.subTitlesView}>

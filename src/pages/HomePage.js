@@ -7,7 +7,7 @@
 import React, {Component} from 'react';
 import {Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { BsArrowRightCircle } from "react-icons/bs";
+import { BsArrowRightCircle, BsFillCircleFill } from "react-icons/bs";
 
 //styles
 const styles = StyleSheet.create({
@@ -149,12 +149,13 @@ class HomePage extends Component {
                   </Text>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
-                      Status: {item.status}
-                    </Text>
-                  </View>
-                  <View style={styles.subTitlesView}>
-                    <Text style={styles.subTitlesText}>
-                      Species: {item.species}
+                      {item.status == "Alive" ?
+                        <BsFillCircleFill style={{ height: 8, width: 8, color: '#008000'}}/>
+                        : item.status == "unknown" ?
+                          <BsFillCircleFill style={{ height: 8, width: 8, color: '#CCCCCC'}}/>
+                          :
+                          <BsFillCircleFill style={{ height: 8, width: 8, color: '#000000'}}/>
+                      } {item.status} - {item.species}
                     </Text>
                   </View>
                   <View style={styles.subTitlesView}>
