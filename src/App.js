@@ -17,7 +17,7 @@ const MyStack = () => {
       <NavigationContainer>
       <Stack.Navigator initialRouteName="HomePage">
         <Stack.Screen name="HomePage" component={HomePage} options={{ title: 'Rick & Morty' }} />
-        <Stack.Screen name="DetailView" component={DetailView} />
+        <Stack.Screen name="DetailView" component={DetailView} options={{ title: 'Character infos' }} />
       </Stack.Navigator>
       </NavigationContainer>
    );

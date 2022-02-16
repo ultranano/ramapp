@@ -5,14 +5,14 @@
 
 //import dependencies
 import React, {Component} from 'react';
-import {Button, Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
+import {Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BsArrowRightCircle } from "react-icons/bs";
 
 //styles
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     backgroundColor: '#FFFFFF',
   },
   mainCardView: {
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   subCardView: {
-    height: 102,
-    width: 102,
+    height: 92,
+    width: 92,
     borderRadius: 15,
     backgroundColor: '#696969',
     borderColor: '#696969',
@@ -140,12 +140,12 @@ class HomePage extends Component {
             <View style={styles.mainCardView}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View style={styles.subCardView}>
-                  <Image source={item.image} resizeMode="contain" style={{ borderRadius: 14, height: 100, width: 100 }}
+                  <Image source={item.image} resizeMode="contain" style={{ borderRadius: 14, height: 90, width: 90 }}
                   />
                 </View>
                 <View style={{marginLeft: 10}}>
                   <Text style={styles.titleText}>
-                    {item.name.indexOf('(') == -1 ? item.name : item.name.substring(0, item.name.indexOf('('))}
+                    {item.name.indexOf('(') === -1 ? item.name : item.name.substring(0, item.name.indexOf('('))}
                   </Text>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
@@ -159,7 +159,7 @@ class HomePage extends Component {
                   </View>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
-                      Type: {item.type == "" ? 'Unknown' : item.type.indexOf('(') == -1 ? item.type : item.type.substring(0, item.type.indexOf('('))}
+                      Type: {item.type === "" ? 'Unknown' : item.type.indexOf('(') === -1 ? item.type : item.type.substring(0, item.type.indexOf('('))}
                     </Text>
                   </View>
                   <View style={styles.subTitlesView}>
@@ -169,7 +169,7 @@ class HomePage extends Component {
                   </View>
                   <View style={styles.subTitlesView}>
                     <Text style={styles.subTitlesText}>
-                      Origin: {item.origin.name.indexOf('(') == -1 ? item.origin.name : item.origin.name.substring(0, item.origin.name.indexOf('('))}
+                      Origin: {item.origin.name.indexOf('(') === -1 ? item.origin.name : item.origin.name.substring(0, item.origin.name.indexOf('('))}
                     </Text>
                   </View>
                 </View>

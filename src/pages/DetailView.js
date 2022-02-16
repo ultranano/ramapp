@@ -26,8 +26,9 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   subCardView: {
-    height: 82,
-    width: 82,
+    height: 122,
+    width: 122,
+    marginLeft: 12,
     borderRadius: 15,
     backgroundColor: '#696969',
     borderColor: '#696969',
@@ -45,6 +46,12 @@ const styles = StyleSheet.create({
     color: '#696969',
     fontSize: 12
   },
+  subInfoTitlesView: {
+    marginTop: 5,
+    marginLeft: 12,
+    color: '#696969',
+    fontSize: 12
+  }
 });
 
 class DetailView extends Component {
@@ -52,74 +59,125 @@ class DetailView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: [],
-      items: []
+      dataSourceLocation: [],
+      dataSourceOrigin: [],
+      dataSourceEpisodes: [],
+      amountOfResidentsForOrigin: 0,
+      amountOfResidentsForLocation: 0,
      };
   }
 
+
   componentDidMount(){
 
+    const { item } = this.props.route.params;
 
-    /*
-    console.log('fetchData https://rickandmortyapi.com/api/character')
-    fetch("https://rickandmortyapi.com/api/character")
+    console.log(item.origin.url)
+    fetch(item.origin.url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
     .then(response => response.json())
     .then((responseJson)=> {
       this.setState({
-       dataSource: responseJson,
-       items: responseJson.results
+       dataSourceOrigin: responseJson,
+       amountOfResidentsForOrigin: responseJson.residents.length
       })
     })
     .catch(error=>console.log(error)) //to catch the errors if any
-    */
-  }
 
-    fetchMoreData = () => {
-      console.log('fetchMoreData ' + this.state.dataSource.info.next)
-      fetch(this.state.dataSource.info.next)
-      .then(response => response.json())
-      .then((responseJson)=> {
-        this.setState({
-         dataSource: responseJson,
-         items: this.state.items.concat(responseJson.results)
-        })
+    console.log(item.location.url)
+    fetch(item.location.url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(response => response.json())
+    .then((responseJson)=> {
+      this.setState({
+       dataSourceLocation: responseJson,
+       amountOfResidentsForLocation: responseJson.residents.length
       })
-      .catch(error=>console.log(error)) //to catch the errors if any
-    };
+    })
+    .catch(error=>console.log(error)) //to catch the errors if any
+  }
 
     render(){
 
      const { navigate } = this.props.navigation;
-     const {item} = this.props.route.params;
+     const { item } = this.props.route.params;
 
      return(
       <View style={{padding:10}}>
-      <View style={styles.mainCardView}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={styles.subCardView}>
-            <Image source={item.image} resizeMode="contain" style={{ borderRadius: 14, height: 80, width: 80 }}
-            />
-          </View>
-          <View style={{marginLeft: 12}}>
-            <Text style={{ fontSize: 14, color: '#000', fontWeight: 'bold', fontFamily: 'lucida grande', textTransform: 'capitalize'}}>
-              {item.name}
-            </Text>
-            <View style={styles.subTitlesView}>
-              <Text style={styles.subTitlesText}>
-                Species: {item.species}
-              </Text>
-            </View>
-            <View style={styles.subTitlesView}>
-              <Text style={styles.subTitlesText}>
-                Gender: {item.gender}
-              </Text>
-            </View>
-            <View style={styles.subTitlesView}>
-              <Text style={styles.subTitlesText}>
-                Origin: {item.origin.name}
-              </Text>
-            </View>
-          </View>
+      <View style={styles.subCardView}>
+        <Image source={item.image} resizeMode="contain" style={{ borderRadius: 14, height: 120, width: 120 }} />
+      </View>
+      <View style={{marginLeft: 12}}>
+        <Text style={{ marginTop:10, fontSize: 24, color: '#000', fontWeight: 'bold', fontFamily: 'lucida grande', textTransform: 'capitalize'}}>
+          {item.name}
+        </Text>
+        <View style={styles.subTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Status: {item.status}
+          </Text>
+        </View>
+        <View style={styles.subTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Species: {item.species}
+          </Text>
+        </View>
+        <View style={styles.subTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Type: {item.type === "" ? 'Unknown' : item.type.indexOf('(') === -1 ? item.type : item.type.substring(0, item.type.indexOf('('))}
+          </Text>
+        </View>
+        <View style={styles.subTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Gender: {item.gender}
+          </Text>
+        </View>
+        <View style={styles.subTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Origin: {item.origin.name}
+          </Text>
+        </View>
+        <View style={styles.subInfoTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Type: {this.state.dataSourceOrigin.type}
+          </Text>
+        </View>
+        <View style={styles.subInfoTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Dimension: {this.state.dataSourceOrigin.dimension}
+          </Text>
+        </View>
+        <View style={styles.subInfoTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Amount of Residents: {this.state.amountOfResidentsForOrigin}
+          </Text>
+        </View>
+        <View style={styles.subTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Location: {item.location.name}
+          </Text>
+        </View>
+        <View style={styles.subInfoTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Type: {this.state.dataSourceLocation.type}
+          </Text>
+        </View>
+        <View style={styles.subInfoTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Dimension: {this.state.dataSourceLocation.dimension}
+          </Text>
+        </View>
+        <View style={styles.subInfoTitlesView}>
+          <Text style={styles.subTitlesText}>
+            Amount of Residents: {this.state.amountOfResidentsForLocation}
+          </Text>
         </View>
       </View>
       </View>
