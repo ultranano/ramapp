@@ -5,7 +5,7 @@
 
 //import dependencies
 import React, {Component} from 'react';
-import {Image, FlatList, StyleSheet, Text, View} from 'react-native';
+import {Image, FlatList, Text, View} from 'react-native';
 import { BsFillCircleFill, BsGeoAltFill, BsTv } from "react-icons/bs";
 import { IoIosPlanet } from "react-icons/io";
 import styles from "../styles/DetailPageStyle.js";

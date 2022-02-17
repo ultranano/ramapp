@@ -5,7 +5,7 @@
 
 //import dependencies
 import React, {Component} from 'react';
-import {Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
+import {Image, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BsArrowRightCircle, BsFillCircleFill } from "react-icons/bs";
 import styles from "../styles/HomePageStyle.js";
