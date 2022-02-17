@@ -46,7 +46,23 @@ const styles = StyleSheet.create({
   subTitlesView: {
     marginTop: 4,
     borderWidth: 0,
-    width: '100%'
+    flexDirection:'row',
+  },
+  mainSubTitlesText: {
+    color: '#696969',
+    fontSize: 14,
+    marginTop: 10,
+  },
+  mainSubTitlesTextGeo: {
+    color: '#696969',
+    fontSize: 14,
+    marginTop: 6,
+    marginBottom: 12,
+  },
+  mainSubTitlesTextTv: {
+    color: '#696969',
+    fontSize: 14,
+    marginTop: 4,
   },
   subTitlesText: {
     color: '#696969',
@@ -231,8 +247,8 @@ class DetailView extends Component {
         <this.FlatListItemSeparator />
         <View style={{padding:6}}/>
         <View style={styles.subTitlesView}>
-          <Text style={styles.subTitlesText}>
-            <IoIosPlanet style={{ height: 38, width: 38, color: '#696969'}}/>
+          <IoIosPlanet style={{height: 38, width: 38, color: '#696969'}}/>
+          <Text style={styles.mainSubTitlesText}>
             <b>Origin: {item.origin.name}</b>
           </Text>
         </View>
@@ -270,8 +286,8 @@ class DetailView extends Component {
         <this.FlatListItemSeparator />
         <View style={{padding:6}}/>
         <View style={styles.subTitlesView}>
-          <Text style={styles.subTitlesText}>
-            <BsGeoAltFill style={{ height: 28, width: 28, color: '#696969'}}/>
+          <BsGeoAltFill style={{height: 28, width: 28, marginLeft:3, marginRight:3, color: '#696969'}}/>
+          <Text style={styles.mainSubTitlesTextGeo}>
             <b>Location: {item.location.name}</b>
           </Text>
         </View>
@@ -310,8 +326,13 @@ class DetailView extends Component {
             <this.FlatListItemSeparator />
             <View style={{padding:6}}/>
             <View style={styles.subTitlesView}>
-              <Text style={styles.subTitlesText}>
-                <BsTv style={{ height: 28, width: 28, marginRight:10, color: '#696969'}}/><b>Featured on {item.episode.length} episodes</b>
+              <BsTv style={{ height: 28, width: 28, marginRight:10, color: '#696969'}}/>
+              <Text style={styles.mainSubTitlesTextTv}>
+                { item.episode.length <= 1 ?
+                <b>Featured on {item.episode.length} episode</b>
+                :
+                <b>Featured on {item.episode.length} episodes</b>
+                }
               </Text>
             </View>
             { this.state.loadingEpisodes ?

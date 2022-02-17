@@ -126,7 +126,12 @@ class HomePage extends Component {
         dataLength={this.state.items.length}
         next={this.fetchMoreData}
         hasMore={true}
-        loader={<h4>Loading...</h4>}
+        pullDownToRefresh={false}
+        loader={
+          <p style={{ textAlign: 'center' }}>
+            <b>Loading Data...</b>
+          </p>
+        }
         endMessage={
           <p style={{ textAlign: 'center' }}>
             <b>This is the end! :-)</b>
