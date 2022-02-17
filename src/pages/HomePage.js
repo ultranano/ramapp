@@ -8,62 +8,7 @@ import React, {Component} from 'react';
 import {Image, StyleSheet, Text, View, FlatList, TouchableWithoutFeedback} from 'react-native';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BsArrowRightCircle, BsFillCircleFill } from "react-icons/bs";
-
-//styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 2,
-    backgroundColor: '#FFFFFF',
-  },
-  mainCardView: {
-    height: 130,
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 15,
-    shadowColor: '#696969',
-    shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 1,
-    shadowRadius: 8,
-    elevation: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 16,
-    paddingRight: 14,
-    marginTop: 12,
-    marginBottom: 12,
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  subCardView: {
-    height: 92,
-    width: 92,
-    borderRadius: 15,
-    backgroundColor: '#696969',
-    borderColor: '#696969',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  titleText: {
-    fontSize: 14,
-    color: '#000',
-    fontWeight: 'bold',
-    fontFamily: 'lucida grande',
-    textTransform: 'capitalize',
-    marginLeft: 4
-  },
-  subTitlesView: {
-    marginTop: 4,
-    marginLeft: 4,
-    borderWidth: 0,
-    width: '100%'
-  },
-  subTitlesText: {
-    color: '#696969',
-    fontSize: 12
-  },
-});
+import styles from "../styles/HomePageStyle.js";
 
 //HomePage
 class HomePage extends Component {
